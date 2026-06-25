@@ -20,7 +20,10 @@ app.get('/', (req, res) => {
 /* ================================================================
    DATABASE
    ================================================================ */
-const db = new Database(path.join(__dirname, 'careerai.db'));
+const os = require('os');
+
+const dbPath = path.join(os.tmpdir(), 'careerai.db');
+const db = new Database(dbPath);
 db.pragma('journal_mode = WAL');
 
 db.exec(`
