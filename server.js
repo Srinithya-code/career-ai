@@ -943,7 +943,7 @@ app.post('/api/resume/analyze', async (req, res) => {
    API STATUS ENDPOINT
    ================================================================ */
 app.get('/api/roles', (req, res) => {
-  res.json({ roles: Object.keys(ROLE_MAP) });
+  res.json({ roles: Object.keys(ROLE_ALIASES) });
 });
 
 app.get('/api/status', (req, res) => {
