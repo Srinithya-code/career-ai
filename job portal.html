@@ -413,7 +413,7 @@ main section.page-active{display:block; animation:fadeUp .32s ease;}
     <div class="eyebrow">Step 2 · Live Matching</div>
     <h2 class="shimmer-title">Today's Openings</h2>
     <p class="section-sub" id="todaySubtitle">—</p>
-    <p class="weight-note">Match weighting — Skills 70% · Projects 20% · Domain 10% · Real jobs from JSearch, Adzuna, Arbeitnow, RemoteOK &amp; The Muse</p>
+    <p class="weight-note">Match weighting — Confirmed Roles 50% · Job Title 30% · JD Skills 10% · Experience 5% · Domain 5%</p>
   </div>
 
   <div id="apiStatusBar" style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:16px;"></div>
@@ -425,54 +425,39 @@ main section.page-active{display:block; animation:fadeUp .32s ease;}
       <span class="pill pill-stat mono" id="statLastSearch">last searched: —</span>
     </div>
     <div class="toolbar-right" style="align-items:center;">
+      <div style="position:relative;display:flex;flex-direction:column;gap:2px;min-width:220px;">
+        <label style="font-family:'IBM Plex Mono',monospace;font-size:9px;color:var(--lav400);text-transform:uppercase;letter-spacing:.08em;">Preferred Roles</label>
+        <div id="roleChips" style="display:flex;flex-wrap:wrap;gap:4px;margin-bottom:2px;"></div>
+        <div style="display:flex;gap:6px;align-items:center;">
+          <input type="text" id="roleSearchInput" placeholder="Type or select role…" autocomplete="off" style="background:#1a1a3e; border:1px solid var(--glass-border); color:#F0EDF9; font-family:'IBM Plex Mono',monospace; font-size:13px; padding:9px 12px; border-radius:8px; width:180px;">
+          <button class="btn btn-primary btn-sm" id="confirmRolesBtn" style="white-space:nowrap;">Submit Roles</button>
+        </div>
+        <div id="rolesConfirmedBanner" style="display:none;font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--green);margin-top:2px;"></div>
+        <div id="roleSuggestions" style="display:none;position:absolute;top:100%;left:0;right:0;z-index:200;max-height:280px;overflow-y:auto;background:#1a1a3e;border:1px solid var(--glass-border);border-radius:0 0 8px 8px;margin-top:-1px;"></div>
+      </div>
       <div style="display:flex;flex-direction:column;gap:2px;">
-        <label style="font-family:'IBM Plex Mono',monospace;font-size:9px;color:var(--lav400);text-transform:uppercase;letter-spacing:.08em;">Preferred Role *</label>
-        <select id="preferredRoleInput" style="background:#1a1a3e; border:1px solid var(--glass-border); color:#F0EDF9; font-family:'IBM Plex Mono',monospace; font-size:13px; padding:9px 12px; border-radius:8px; min-width:200px; color-scheme:dark;">
-          <option value="">— Select Role —</option>
-          <option value="Data Analyst">Data Analyst</option>
-          <option value="Data Scientist">Data Scientist</option>
-          <option value="AI/ML Engineer">AI/ML Engineer</option>
-          <option value="Software Developer">Software Developer</option>
-          <option value="Backend Developer">Backend Developer</option>
-          <option value="Frontend Developer">Frontend Developer</option>
-          <option value="Full Stack Developer">Full Stack Developer</option>
-          <option value="Cloud Engineer">Cloud Engineer</option>
-          <option value="DevOps Engineer">DevOps Engineer</option>
-          <option value="Cybersecurity Analyst">Cybersecurity Analyst</option>
-          <option value="VLSI Engineer">VLSI Engineer</option>
-          <option value="Embedded Engineer">Embedded Engineer</option>
-          <option value="Business Analyst">Business Analyst</option>
-          <option value="UI/UX Designer">UI/UX Designer</option>
-          <option value="Data Engineer">Data Engineer</option>
-          <option value="QA Engineer">QA Engineer</option>
-          <option value="Mobile Developer">Mobile Developer</option>
-          <option value="Product Manager">Product Manager</option>
-          <option value="Mechanical Engineer">Mechanical Engineer</option>
-          <option value="Civil Engineer">Civil Engineer</option>
-          <option value="Electrical Engineer">Electrical Engineer</option>
-          <option value="Marketing Analyst">Marketing Analyst</option>
-          <option value="HR Executive">HR Executive</option>
-          <option value="Finance Analyst">Finance Analyst</option>
-          <option value="Other">Other (any role)</option>
+        <label style="font-family:'IBM Plex Mono',monospace;font-size:9px;color:var(--lav400);text-transform:uppercase;letter-spacing:.08em;">Experience</label>
+        <select id="experienceLevelInput" style="background:#1a1a3e; border:1px solid var(--glass-border); color:#F0EDF9; font-family:'IBM Plex Mono',monospace; font-size:13px; padding:9px 12px; border-radius:8px; color-scheme:dark;">
+          <option value="">— Select —</option>
+          <option value="Fresher">Fresher</option>
+          <option value="0-1 Years">0–1 Years</option>
+          <option value="1-3 Years">1–3 Years</option>
+          <option value="3-5 Years">3–5 Years</option>
+          <option value="5+ Years">5+ Years</option>
         </select>
       </div>
-      <input type="text" id="customRoleInput" placeholder="Enter custom role…" style="display:none; background:#1a1a3e; border:1px solid var(--glass-border); color:#F0EDF9; font-family:'IBM Plex Mono',monospace; font-size:13px; padding:9px 12px; border-radius:8px; width:170px;">
-      <select id="locationFilterInput" class="field-inline" style="background:#1a1a3e; border:1px solid var(--glass-border); color:#F0EDF9; font-family:'IBM Plex Mono',monospace; font-size:13px; padding:9px 12px; border-radius:8px; color-scheme:dark;">
-        <option value="">Any location</option>
-        <option value="Remote">Remote</option>
-        <option value="Bangalore">Bangalore</option>
-        <option value="Hyderabad">Hyderabad</option>
-        <option value="Mumbai">Mumbai</option>
-        <option value="Delhi NCR">Delhi NCR</option>
-        <option value="Pune">Pune</option>
-        <option value="Chennai">Chennai</option>
-      </select>
+      <div style="position:relative;display:flex;flex-direction:column;gap:2px;">
+        <label style="font-family:'IBM Plex Mono',monospace;font-size:9px;color:var(--lav400);text-transform:uppercase;letter-spacing:.08em;">Location</label>
+        <div id="locationChips" style="display:flex;flex-wrap:wrap;gap:4px;margin-bottom:2px;"></div>
+        <input type="text" id="locationFilterInput" placeholder="Type city…" autocomplete="off" style="background:#1a1a3e; border:1px solid var(--glass-border); color:#F0EDF9; font-family:'IBM Plex Mono',monospace; font-size:13px; padding:9px 12px; border-radius:8px; width:190px;">
+        <div id="locationSuggestions" style="display:none;position:absolute;top:100%;left:0;right:0;z-index:200;max-height:220px;overflow-y:auto;background:#1a1a3e;border:1px solid var(--glass-border);border-radius:0 0 8px 8px;margin-top:-1px;"></div>
+      </div>
       <button class="btn btn-primary" id="updateBtn">⟳ Find Matching Jobs</button>
     </div>
   </div>
- 
+
   <div id="todayBanner"></div>
- 
+
   <div class="jobs-grid" id="todayGrid"></div>
 </section>
  
@@ -592,22 +577,113 @@ const DOMAIN_SKILL_MAP = {
 
 const VLSI_KEYWORDS = ['verilog','vhdl','rtl','fpga','asic','dft','sta','physical design','verification','systemverilog','uvm'];
 
-/* ============== DOMAIN DETECTION ============== */
+/* ============== DOMAIN DETECTION — weighted by resume section ============== */
+function extractResumeSection(text, sectionNames){
+  const pattern = new RegExp('(?:' + sectionNames.join('|') + ')[\\s:\\n]+([\\s\\S]*?)(?:\\n\\n|\\r\\n\\r\\n|$)', 'i');
+  const m = text.match(pattern);
+  return m ? m[1].slice(0, 2000) : '';
+}
+
+/* Priority 1: Summary/Objective — extract explicit role mention */
+const SUMMARY_ROLE_PATTERNS = [
+  {re:/\bvlsi/i, domain:'VLSI/ECE', role:'VLSI Engineer'},
+  {re:/\bphysical\s*design/i, domain:'VLSI/ECE', role:'Physical Design Engineer'},
+  {re:/\brtl\s*design/i, domain:'VLSI/ECE', role:'RTL Design Engineer'},
+  {re:/\basic\s*(?:design|verification)/i, domain:'VLSI/ECE', role:'VLSI Engineer'},
+  {re:/\bfpga/i, domain:'VLSI/ECE', role:'FPGA Engineer'},
+  {re:/\bdigital\s*(?:design|asic)/i, domain:'VLSI/ECE', role:'VLSI Engineer'},
+  {re:/\bsemiconductor/i, domain:'VLSI/ECE', role:'VLSI Engineer'},
+  {re:/\bchip\s*design/i, domain:'VLSI/ECE', role:'VLSI Engineer'},
+  {re:/\bsoftware\s*(?:developer|engineer)/i, domain:'Full Stack', role:'Software Developer'},
+  {re:/\bfrontend\s*(?:developer|engineer)/i, domain:'Frontend', role:'Frontend Developer'},
+  {re:/\bbackend\s*(?:developer|engineer)/i, domain:'Backend', role:'Backend Developer'},
+  {re:/\bfull\s*stack/i, domain:'Full Stack', role:'Full Stack Developer'},
+  {re:/\bweb\s*develop/i, domain:'Full Stack', role:'Full Stack Developer'},
+  {re:/\bdata\s*(?:analyst|analytics)/i, domain:'Data Science', role:'Data Analyst'},
+  {re:/\bdata\s*scien/i, domain:'Data Science', role:'Data Scientist'},
+  {re:/\b(?:machine\s*learning|ml|ai)\s*engineer/i, domain:'AI/ML', role:'AI/ML Engineer'},
+  {re:/\bdeep\s*learning/i, domain:'AI/ML', role:'AI/ML Engineer'},
+  {re:/\bdevops/i, domain:'DevOps', role:'DevOps Engineer'},
+  {re:/\bcloud\s*(?:engineer|architect)/i, domain:'Cloud', role:'Cloud Engineer'},
+  {re:/\bcyber\s*security/i, domain:'Cybersecurity', role:'Cybersecurity Analyst'},
+  {re:/\bembedded\s*(?:engineer|system|software)/i, domain:'Embedded', role:'Embedded Engineer'},
+  {re:/\bfirmware/i, domain:'Embedded', role:'Embedded Engineer'},
+  {re:/\bmechanical\s*engineer/i, domain:'Mechanical', role:'Mechanical Engineer'},
+  {re:/\bcivil\s*engineer/i, domain:'Civil', role:'Civil Engineer'},
+  {re:/\belectrical\s*engineer/i, domain:'Electrical', role:'Electrical Engineer'},
+  {re:/\bui\s*\/?\s*ux/i, domain:'UI/UX', role:'UI/UX Designer'},
+  {re:/\bproduct\s*manag/i, domain:'Operations', role:'Product Manager'},
+  {re:/\bmobile\s*(?:app|develop)/i, domain:'Mobile', role:'Mobile Developer'},
+  {re:/\bandroid\s*develop/i, domain:'Mobile', role:'Mobile Developer'},
+  {re:/\bios\s*develop/i, domain:'Mobile', role:'Mobile Developer'},
+  {re:/\bqa\s*(?:engineer|analyst|test)/i, domain:'Testing/QA', role:'QA Engineer'},
+  {re:/\btest\s*(?:engineer|automation)/i, domain:'Testing/QA', role:'QA Engineer'},
+  {re:/\bbusiness\s*analyst/i, domain:'Operations', role:'Business Analyst'},
+  {re:/\bdata\s*engineer/i, domain:'Data Science', role:'Data Engineer'},
+  {re:/\bmarketing/i, domain:'Marketing', role:'Marketing Analyst'},
+  {re:/\bhuman\s*resource|(\bhr\b)/i, domain:'HR', role:'HR Executive'},
+  {re:/\bfinance\s*(?:analyst|manager)/i, domain:'Finance', role:'Finance Analyst'},
+];
+
 function detectDomains(skills, resumeText){
   const lower = (resumeText||'').toLowerCase();
-  const userSkillsLower = new Set((skills||[]).map(s=>s.toLowerCase().trim()));
-  const vlsiCount = VLSI_KEYWORDS.filter(k=>lower.includes(k)).length;
-  const swCount = ['javascript','react','node.js','python','java','sql','html','css','docker'].filter(k=>lower.includes(k)).length;
-  const scores = {};
-  for(const [domain, cfg] of Object.entries(DOMAIN_SKILL_MAP)){
-    let sc = 0;
-    cfg.skills.forEach(s=>{ if(userSkillsLower.has(s.toLowerCase())) sc+=10; });
-    (cfg.keywords||[]).forEach(k=>{ if(lower.includes(k)) sc+=5; });
-    if(sc>0) scores[domain]=sc;
+
+  /* --- Extract resume sections --- */
+  const summaryText = extractResumeSection(lower, ['summary','professional summary','objective','career objective','about me','profile']);
+  const skillsText = (skills||[]).join(' ').toLowerCase();
+  const projectsText = extractResumeSection(lower, ['projects','project experience','selected projects','academic projects','key projects']);
+  const experienceText = extractResumeSection(lower, ['experience','work experience','professional experience','employment','internship','internships']);
+  const certsText = extractResumeSection(lower, ['certifications','certificates','certification','courses','training']);
+  const educationText = extractResumeSection(lower, ['education','academic','qualification']);
+
+  /* --- Priority 1: Check Summary for explicit role mention --- */
+  let summaryRole = null;
+  let summaryDomain = null;
+  const textToScan = summaryText || lower.slice(0, 600);
+  for (const pat of SUMMARY_ROLE_PATTERNS) {
+    if (pat.re.test(textToScan)) {
+      summaryRole = pat.role;
+      summaryDomain = pat.domain;
+      console.log('[Domain] Priority 1 — Summary mentions:', summaryRole, '→ domain:', summaryDomain);
+      break;
+    }
   }
-  if(vlsiCount>=2 && vlsiCount>=swCount) scores['VLSI/ECE']=Math.max(scores['VLSI/ECE']||0,100);
-  const sorted = Object.entries(scores).sort((a,b)=>b[1]-a[1]);
-  return { primary:sorted[0]?sorted[0][0]:'General', secondary:sorted[1]?sorted[1][0]:null, allScores:scores };
+
+  /* --- Priority 2-6: Weighted section analysis (only when summary is unclear) --- */
+  const sections = [
+    { name: 'Skills',   text: skillsText,      weight: 0.35 },
+    { name: 'Projects', text: projectsText,     weight: 0.25 },
+    { name: 'Experience', text: experienceText,  weight: 0.20 },
+    { name: 'Certs',    text: certsText,        weight: 0.10 },
+    { name: 'Education', text: educationText,    weight: 0.10 },
+  ];
+
+  const scores = {};
+  for (const [domain, cfg] of Object.entries(DOMAIN_SKILL_MAP)) {
+    let totalScore = 0;
+    for (const sec of sections) {
+      if (!sec.text) continue;
+      let secHits = 0;
+      cfg.skills.forEach(s => { if (sec.text.includes(s.toLowerCase())) secHits += 10; });
+      (cfg.keywords || []).forEach(k => { if (sec.text.includes(k)) secHits += 5; });
+      totalScore += secHits * sec.weight;
+    }
+    if (totalScore > 0) scores[domain] = Math.round(totalScore);
+  }
+
+  if (summaryDomain) {
+    const maxOther = Math.max(...Object.values(scores), 0);
+    scores[summaryDomain] = maxOther + 500;
+  }
+
+  const sorted = Object.entries(scores).sort((a, b) => b[1] - a[1]);
+  const primary = sorted[0] ? sorted[0][0] : 'General';
+  const secondary = sorted[1] ? sorted[1][0] : null;
+
+  console.log('[Domain] Scores:', JSON.stringify(scores));
+  console.log('[Domain] Primary:', primary, '| Secondary:', secondary, '| Summary role:', summaryRole);
+
+  return { primary, secondary, allScores: scores, summaryRole };
 }
 
 function detectCareerLevel(text, expYears){
@@ -875,6 +951,7 @@ function parseResumeText(text){
     summary: summaryMatch ? summaryMatch[1].trim().slice(0,400) : '',
     primaryDomain: domains.primary,
     secondaryDomain: domains.secondary,
+    summaryRole: domains.summaryRole || null,
     careerLevel,
     skillStrength
   };
@@ -1057,13 +1134,9 @@ async function runAppInit(){
   setupListeners();
  
   setInterval(()=>{
-    if(window.__lastKnownDay !== todayStr()){
-      window.__lastKnownDay = todayStr();
-      renderToday();
-      renderPrevious();
-    }
+    renderToday();
+    renderPrevious();
   }, 60000);
-  window.__lastKnownDay = todayStr();
 }
  
 function setupNav(){
@@ -1110,17 +1183,76 @@ function renderSavedJobs(){
   wireJobCardActions(grid);
 }
  
+/* ============== JOB AGE — based on when the user fetched the job ============== */
+function isJobToday(job){
+  const today = todayStr();
+  if(job.dateAdded === today) return true;
+
+  const now = Date.now();
+  const addedDate = new Date((job.dateAdded || '') + 'T00:00:00');
+  if(!isNaN(addedDate.getTime()) && (now - addedDate.getTime()) < 24 * 60 * 60 * 1000) return true;
+
+  return false;
+}
+
+/* ============== CLIENT-SIDE STRICT LOCATION FILTER ============== */
+function jobMatchesSelectedLocations(job){
+  if(SELECTED_LOCATIONS.length === 0) return true;
+  if(SELECTED_LOCATIONS.some(l => l.toLowerCase() === 'all locations')) return true;
+
+  const jobLoc = (job.location || '').toLowerCase();
+  const jobIsRemote = job.isRemote || /\bremote\b/i.test(jobLoc);
+  const wantsRemote = SELECTED_LOCATIONS.some(l => l.toLowerCase() === 'remote');
+  const physicalLocs = SELECTED_LOCATIONS.filter(l => l.toLowerCase() !== 'remote' && l.toLowerCase() !== 'all locations');
+
+  if(wantsRemote && physicalLocs.length === 0) return jobIsRemote;
+
+  const METRO = {
+    'hyderabad':['hyderabad','hyd','hitec city','gachibowli','madhapur','kondapur','kukatpally','secunderabad','miyapur','lb nagar','jubilee hills','banjara hills','uppal','ameerpet','begumpet'],
+    'bangalore':['bangalore','bengaluru','blr','electronic city','whitefield','marathahalli','koramangala','hsr layout','manyata','hebbal','bellandur','sarjapur','indiranagar','jp nagar'],
+    'bengaluru':['bangalore','bengaluru','blr','electronic city','whitefield','marathahalli','koramangala','hsr layout','manyata','hebbal','bellandur','sarjapur','indiranagar','jp nagar'],
+    'mumbai':['mumbai','bom','navi mumbai','thane','andheri','bkc','powai','lower parel','goregaon','malad','worli'],
+    'delhi':['delhi','new delhi','del','delhi ncr','ncr'],
+    'delhi ncr':['delhi','new delhi','del','delhi ncr','ncr','noida','greater noida','gurugram','gurgaon','faridabad','ghaziabad'],
+    'noida':['noida','greater noida'],
+    'gurugram':['gurugram','gurgaon'],'gurgaon':['gurugram','gurgaon'],
+    'pune':['pune','hinjewadi','kharadi','magarpatta','wakad','baner','viman nagar','hadapsar'],
+    'chennai':['chennai','omr','sholinganallur','tambaram','porur','guindy','taramani','velachery'],
+    'kolkata':['kolkata','salt lake','rajarhat','new town'],
+    'visakhapatnam':['visakhapatnam','vizag','vishakhapatnam'],
+    'vizag':['visakhapatnam','vizag','vishakhapatnam'],
+    'chandigarh':['chandigarh','mohali','panchkula'],
+    'kochi':['kochi','ernakulam'],
+    'thiruvananthapuram':['thiruvananthapuram','trivandrum'],
+  };
+
+  function normLoc(s){ return s.toLowerCase().replace(/,\s*(india|in|telangana|karnataka|maharashtra|tamil nadu|andhra pradesh|west bengal|uttar pradesh|haryana|rajasthan|gujarat|kerala|madhya pradesh|odisha|bihar|jharkhand|punjab|chandigarh|uttarakhand|puducherry|goa)\s*$/gi,'').trim(); }
+
+  const expandedSet = new Set();
+  for(const loc of physicalLocs){
+    const n = normLoc(loc);
+    expandedSet.add(n);
+    const metro = METRO[n];
+    if(metro) metro.forEach(a => expandedSet.add(a));
+  }
+
+  const normJob = normLoc(jobLoc);
+  const locMatch = [...expandedSet].some(loc => normJob.includes(loc) || jobLoc.includes(loc));
+
+  if(wantsRemote && physicalLocs.length > 0) return locMatch || jobIsRemote;
+  return locMatch;
+}
+
 /* ============== TODAY'S OPENINGS ============== */
 function archiveOldJobs(){
-  const today = todayStr();
   let changed = false;
   for(const j of JOBS){
-    if(j.dateAdded !== today && j.category !== 'previous'){
-      j.category = 'previous';
-      changed = true;
-    }
-    if(j.dateAdded === today && j.category === 'previous'){
+    const shouldBeToday = isJobToday(j);
+    if(shouldBeToday && j.category === 'previous'){
       j.category = 'today';
+      changed = true;
+    } else if(!shouldBeToday && j.category !== 'previous'){
+      j.category = 'previous';
       changed = true;
     }
   }
@@ -1128,16 +1260,17 @@ function archiveOldJobs(){
 }
 
 function renderToday(){
-  const today = todayStr();
   archiveOldJobs();
-  const todays = JOBS.filter(j => j.category !== 'previous' && j.dateAdded === today);
+
+  const todays = JOBS.filter(j => isJobToday(j) && jobMatchesSelectedLocations(j));
+
   document.getElementById('statFoundToday').textContent = todays.length + ' found today';
-  document.getElementById('statHighMatch').textContent = todays.filter(j=>j.score>=85).length + ' strong matches';
+  document.getElementById('statHighMatch').textContent = todays.filter(j=>j.score>=75).length + ' strong matches';
   document.getElementById('statLastSearch').textContent = 'last searched: ' + (META.lastRefresh ? new Date(META.lastRefresh).toLocaleTimeString('en-IN',{hour:'2-digit',minute:'2-digit'}) : '—');
 
   const grid = document.getElementById('todayGrid');
   if(todays.length === 0){
-    grid.innerHTML = `<div class="empty-state"><div class="ic">◈</div><p>Click "Find Matching Jobs" to search for openings.</p></div>`;
+    grid.innerHTML = `<div class="empty-state"><div class="ic">◈</div><p>No openings posted in the last 24 hours. Click "Find Matching Jobs" to search for new opportunities.</p></div>`;
     return;
   }
   grid.innerHTML = todays.slice().sort((a,b)=>b.score-a.score).map(j => jobCardHtml(j, true)).join('');
@@ -1148,8 +1281,8 @@ function jobCardHtml(j, isToday){
   const isSaved = j.saved;
   const isApplied = APPLIED.some(a => a.jobId === j.id);
   const hasSkillBreakdown = (j.matchingSkills && j.matchingSkills.length) || (j.missingSkills && j.missingSkills.length);
-  const dateStr = j.datePosted ? new Date(j.datePosted).toLocaleDateString('en-IN',{day:'numeric',month:'short',year:'numeric'}) : '';
-  const descPreview = (j.description||'').replace(/<[^>]*>/g,' ').slice(0,200);
+  const dateStr = j.datePosted ? new Date(j.datePosted).toLocaleDateString('en-IN',{day:'numeric',month:'long',year:'numeric'}) : '';
+  const descPreview = (j.description||'').replace(/<[^>]*>/g,' ').slice(0,180);
   return `
   <div class="glass job-card" data-id="${j.id}">
     <div class="job-row1">
@@ -1158,20 +1291,27 @@ function jobCardHtml(j, isToday){
     </div>
     <div class="job-title">${escapeHtml(j.title)}</div>
     <div class="chips-row">
-      <span class="chip">📍 ${escapeHtml(j.location||'—')}</span>
+      <span class="chip">📍 ${escapeHtml(j.location||'Not Disclosed')}</span>
       ${j.isRemote ? '<span class="chip" style="color:var(--teal)">🌐 Remote</span>' : '<span class="chip">🏢 Onsite</span>'}
       ${j.employmentType ? `<span class="chip">${escapeHtml(j.employmentType)}</span>` : ''}
-      ${j.domain ? `<span class="chip">${escapeHtml(j.domain)}</span>` : ''}
       <span class="chip">via ${escapeHtml(j.foundVia||j.source||'—')}</span>
       ${dateStr ? `<span class="chip">📅 ${dateStr}</span>` : ''}
+      ${j.verified ? '<span class="verified-tag">Verified</span>' : ''}
     </div>
-    ${descPreview ? `<div style="font-size:12px;color:var(--text-muted);margin-bottom:10px;line-height:1.5;max-height:54px;overflow:hidden;">${escapeHtml(descPreview)}${descPreview.length>=200?'…':''}</div>` : ''}
-    ${(j.skillMatchPct!==undefined) ? `<div class="chips-row">
-      <span class="pill pill-stat">Skills: ${j.skillMatchPct}%</span>
-      <span class="pill pill-stat">Projects: ${j.projectMatchPct||0}%</span>
-      <span class="pill pill-stat">Domain: ${j.domainMatchPct||0}%</span>
-      ${j.verified ? '<span class="verified-tag">✓ Verified</span>' : '<span class="unverified-tag">⚠ Unverified</span>'}
-    </div>` : ''}
+    <div class="chips-row" style="margin-bottom:6px;">
+      <span class="chip" style="color:var(--green);">💰 ${j.salary ? escapeHtml(j.salary) : 'Salary: Not Disclosed'}</span>
+      <span class="chip">📋 ${j.experienceRequired ? escapeHtml(j.experienceRequired) : 'Exp: Not Specified'}</span>
+      <span class="chip">🆓 Free to Apply</span>
+    </div>
+    ${descPreview ? `<div style="font-size:12px;color:var(--text-muted);margin-bottom:10px;line-height:1.5;max-height:54px;overflow:hidden;">${escapeHtml(descPreview)}${descPreview.length>=180?'…':''}</div>` : ''}
+    <div class="chips-row">
+      <span class="pill ${(j.skillMatchPct||0)>=50?'pill-green':(j.skillMatchPct||0)>=25?'pill-amber':'pill-red'}">JD Skills: ${j.skillMatchPct||0}%</span>
+      <span class="pill ${(j.titleMatchPct||0)>=80?'pill-green':(j.titleMatchPct||0)>=60?'pill-amber':'pill-red'}">Title: ${j.titleMatchPct||0}%</span>
+      <span class="pill pill-stat">Role: ${j.confirmedRolePct||0}%</span>
+      <span class="pill pill-stat">Exp: ${j.experienceMatchPct||0}%</span>
+    </div>
+    ${j.matchedRole ? `<div style="font-size:10.5px;color:var(--text-muted);margin-bottom:4px;font-family:'IBM Plex Mono',monospace;">Matched role: ${escapeHtml(j.matchedRole)}</div>` : ''}
+    <div class="weight-note" style="margin-bottom:8px;">Confirmed Roles 50% · Title 30% · JD Skills 10% · Experience 5% · Domain 5%</div>
     ${j.recommendationReason ? `<div style="font-size:11.5px;color:var(--teal);margin-bottom:8px;font-family:'IBM Plex Mono',monospace;">${escapeHtml(j.recommendationReason)}</div>` : ''}
     ${hasSkillBreakdown ? `
     <div class="match-cols">
@@ -1185,8 +1325,8 @@ function jobCardHtml(j, isToday){
       </div>
     </div>` : ''}
     <div class="job-actions" style="margin-top:8px;">
-      <a href="${escapeHtml(j.applyLink||'#')}" target="_blank" rel="noopener" class="btn btn-primary btn-sm" style="text-decoration:none;" ${!j.applyLink?'disabled':''}>Apply Now →</a>
-      <button class="btn btn-ghost btn-sm" data-action="apply" data-id="${j.id}" ${isApplied?'disabled':''}>${isApplied ? '✓ Tracked' : '📋 Track Application'}</button>
+      <a href="${escapeHtml(j.applyLink||'#')}" target="_blank" rel="noopener" class="btn btn-primary btn-sm" style="text-decoration:none;" onclick="event.stopPropagation();">Apply Now →</a>
+      <button class="btn btn-ghost btn-sm" data-action="apply" data-id="${j.id}" ${isApplied?'disabled':''}>${isApplied ? '✓ Tracked' : '📋 Track'}</button>
       <button class="btn btn-save btn-sm ${isSaved?'saved':''}" data-action="save" data-id="${j.id}">${isSaved ? '★ Saved' : '☆ Save'}</button>
     </div>
   </div>`;
@@ -1231,11 +1371,10 @@ async function applyToJob(id){
  
 /* ============== PREVIOUS OPENINGS + HISTORY ============== */
 function renderPrevious(){
-  const today = todayStr();
-  const previous = JOBS.filter(j => j.category === 'previous' || j.dateAdded !== today);
+  const previous = JOBS.filter(j => !isJobToday(j) && jobMatchesSelectedLocations(j));
   const grid = document.getElementById('previousGrid');
   if(previous.length === 0){
-    grid.innerHTML = `<div class="empty-state"><div class="ic">◈</div><p>Nothing here yet — jobs move here automatically at midnight.</p></div>`;
+    grid.innerHTML = `<div class="empty-state"><div class="ic">◈</div><p>Nothing here yet — jobs older than 24 hours will appear here automatically.</p></div>`;
     return;
   }
 
@@ -1280,47 +1419,72 @@ function renderHistory(){
 function renderApiStatus(apiStatus, sourceCounts){
   const bar = document.getElementById('apiStatusBar');
   if(!bar) return;
-  const sources = ['JSearch','Adzuna','Arbeitnow','RemoteOK','TheMuse'];
-  bar.innerHTML = sources.map(s => {
+  const sources = ['JSearch','Adzuna','Jooble','Greenhouse','Lever','SmartRecruiters','Workday','Ashby','TheMuse','Arbeitnow','RemoteOK'];
+  const pills = sources.map(s => {
     const count = (sourceCounts||{})[s] || 0;
     const status = (apiStatus||{})[s];
     if(status === 'ok') return `<span class="pill pill-green">${s}: ${count} jobs</span>`;
     if(status === 'failed') return `<span class="pill pill-red">${s}: failed</span>`;
-    return `<span class="pill pill-grey">${s}: not configured</span>`;
-  }).join('');
+    return `<span class="pill pill-grey">${s}: —</span>`;
+  });
+  const totalSearched = Object.values(sourceCounts||{}).reduce((a,b)=>a+b, 0);
+  if(totalSearched > 0) pills.push(`<span class="pill pill-stat">Total raw: ${totalSearched}</span>`);
+  bar.innerHTML = pills.join('');
 }
 
 async function updateTodaysJobs(){
   const btn = document.getElementById('updateBtn');
   const bannerEl = document.getElementById('todayBanner');
-  const locationPref = document.getElementById('locationFilterInput').value;
-  const roleSelect = document.getElementById('preferredRoleInput');
-  const customRoleInput = document.getElementById('customRoleInput');
-  let preferredRole = roleSelect.value;
-
-  if(preferredRole === 'Other' && customRoleInput.value.trim()){
-    preferredRole = customRoleInput.value.trim();
-  }
-
-  if(!preferredRole){
-    bannerEl.innerHTML = bannerHtml('err', '✕ Please select a Preferred Role before searching.');
-    roleSelect.style.borderColor = 'var(--red)';
-    roleSelect.focus();
-    setTimeout(()=> roleSelect.style.borderColor = '', 3000);
+  const locationPref = (typeof getSelectedLocation === 'function' && getSelectedLocation()) ? getSelectedLocation() : document.getElementById('locationFilterInput').value;
+  if(SELECTED_ROLES.length === 0){
+    const roleInput = document.getElementById('roleSearchInput');
+    bannerEl.innerHTML = bannerHtml('err', 'Please select at least one preferred role. Type a role name or click the input to see suggestions.');
+    if(roleInput){ roleInput.style.borderColor = 'var(--red)'; roleInput.focus(); setTimeout(()=> roleInput.style.borderColor = '', 3000); }
     return;
   }
 
-  btn.disabled = true;
-  btn.innerHTML = '<span class="spinner"></span> Searching for ' + escapeHtml(preferredRole) + '…';
-  bannerEl.innerHTML = bannerHtml('info', '<span class="spinner"></span> Searching for <strong>' + escapeHtml(preferredRole) + '</strong> across JSearch, Adzuna, Arbeitnow, RemoteOK, The Muse…');
+  if(!ROLES_CONFIRMED){
+    bannerEl.innerHTML = bannerHtml('err', 'Please review the suggested roles and click <strong>Submit Roles</strong> to confirm your preferences before searching.');
+    const confirmBtn = document.getElementById('confirmRolesBtn');
+    if(confirmBtn){ confirmBtn.style.boxShadow = '0 0 12px var(--lav500)'; setTimeout(()=> confirmBtn.style.boxShadow = '', 3000); }
+    return;
+  }
+
+  const preferredRole = SELECTED_ROLES[0];
+
+  const expSelect = document.getElementById('experienceLevelInput');
+  const expLevel = expSelect ? expSelect.value : '';
 
   if(!PROFILE || !PROFILE.skills || !PROFILE.skills.length){
-    bannerEl.innerHTML = bannerHtml('err', '✕ Please upload your resume first so we can match jobs to your skills.');
+    bannerEl.innerHTML = bannerHtml('err', 'Please upload your resume first to receive personalised job recommendations.');
     btn.disabled = false; btn.innerHTML = '⟳ Find Matching Jobs';
     return;
   }
 
+  if(!expLevel && (PROFILE.experienceYears === undefined || PROFILE.experienceYears === null || PROFILE.experienceYears === 0)){
+    bannerEl.innerHTML = bannerHtml('err', 'We could not determine your experience from your resume. Please select your experience level to continue.');
+    if(expSelect){ expSelect.style.borderColor = 'var(--red)'; expSelect.focus(); setTimeout(()=> expSelect.style.borderColor = '', 3000); }
+    return;
+  }
+
+  if(expLevel){
+    const expMap = {'Fresher':0,'0-1 Years':0.5,'1-3 Years':2,'3-5 Years':4,'5+ Years':7};
+    PROFILE.experienceYears = expMap[expLevel] ?? PROFILE.experienceYears ?? 0;
+    PROFILE.experienceLevel = expLevel;
+  }
+
+  const roleLabel = SELECTED_ROLES.length <= 2 ? SELECTED_ROLES.join(' & ') : SELECTED_ROLES.length + ' roles';
+
+  // Date filtering is automatic — Today = last 24 hours, Previous = older
+
+  btn.disabled = true;
+  btn.innerHTML = '<span class="spinner"></span> Searching ' + escapeHtml(roleLabel) + '…';
+  bannerEl.innerHTML = bannerHtml('info', '<span class="spinner"></span> Searching for <strong>' + escapeHtml(roleLabel) + '</strong> across all job sources…');
+
   PROFILE.preferredRole = preferredRole;
+  PROFILE.selectedRoles = [...SELECTED_ROLES];
+  PROFILE.targetRoles = [...SELECTED_ROLES];
+  PROFILE.selectedLocations = [...SELECTED_LOCATIONS];
 
   try{
     const existingKeys = JOBS.map(j => (j.company+'|'+j.title+'|'+(j.location||'')).toLowerCase().replace(/\s+/g,''));
@@ -1343,10 +1507,17 @@ async function updateTodaysJobs(){
 
     if(newJobs.length === 0){
       const rawCount = data.totalRaw || 0;
-      if(rawCount > 0){
-        bannerEl.innerHTML = bannerHtml('info', `${rawCount} jobs were fetched but none matched "${escapeHtml(preferredRole)}". Try selecting a broader role or a different location.`);
+      const dedupCount = data.totalDeduped || 0;
+      const roleCount = data.totalRoleFiltered || 0;
+      const locList = SELECTED_LOCATIONS.length > 0 ? SELECTED_LOCATIONS.join(', ') : locationPref;
+      const searchedQueries = (data.queries || []).length;
+      let detail = data.summary || '';
+      if(rawCount > 0 && roleCount === 0 && locList){
+        bannerEl.innerHTML = bannerHtml('info', `${rawCount} jobs were searched across all sources, but none matched "${escapeHtml(roleLabel)}" in ${escapeHtml(locList)} after exhaustive location and title expansion. Try broadening your roles or selecting "All Locations".`);
+      } else if(rawCount > 0){
+        bannerEl.innerHTML = bannerHtml('info', `${rawCount} jobs were searched (${dedupCount} unique), but none matched your profile for "${escapeHtml(roleLabel)}". All sources, title variations, and location fallbacks were tried. Consider adding more roles or trying a different location.`);
       } else {
-        bannerEl.innerHTML = bannerHtml('info', 'No jobs returned from APIs. Please try a different role or location.');
+        bannerEl.innerHTML = bannerHtml('info', `All job sources were searched (${searchedQueries} queries across 5 APIs) but returned no listings for "${escapeHtml(roleLabel)}". This may be a temporary API issue — please try again in a few minutes, or try a different role/location.`);
       }
       btn.disabled = false; btn.innerHTML = '⟳ Find Matching Jobs';
       return;
@@ -1364,9 +1535,15 @@ async function updateTodaysJobs(){
       foundVia: j.foundVia || j.source || 'Job API',
       description: j.description || '',
       score: j.score || 0,
+      titleMatchPct: j.titleMatchPct || 0,
       skillMatchPct: j.skillMatchPct || 0,
+      confirmedRolePct: j.confirmedRolePct || 0,
+      experienceMatchPct: j.experienceMatchPct || 0,
       projectMatchPct: j.projectMatchPct || 0,
       domainMatchPct: j.domainMatchPct || 0,
+      matchedRole: j.matchedRole || '',
+      salary: j.salary || '',
+      experienceRequired: j.experienceRequired || '',
       matchingSkills: j.matchingSkills || [],
       missingSkills: j.missingSkills || [],
       recommendationReason: j.recommendationReason || '',
@@ -1573,16 +1750,33 @@ async function handleResumeFile(file){
     }
     PROFILE = parseResumeText(resumeText);
     await storageSet('profile', PROFILE);
-    bannerEl.innerHTML = bannerHtml('ok', '✓ Resume parsed locally. Enhancing with AI analysis…');
     renderProfileArea();
     renderResumeDisplay();
     renderProfileEditCard();
 
     enhanceWithAI(resumeText);
 
-    showToast('Profile extracted ✓');
+    SELECTED_ROLES = [];
+    const domain = PROFILE.primaryDomain || 'General';
+    const summaryRole = PROFILE.summaryRole;
+
+    if (summaryRole) {
+      addRole(summaryRole);
+      if (ROLE_SUGGESTIONS[summaryRole]) {
+        ROLE_SUGGESTIONS[summaryRole].forEach(r => addRole(r));
+      }
+      console.log('[Resume] Summary explicitly says:', summaryRole, '— using as primary');
+    } else {
+      const suggestedRoles = suggestRolesFromDomain(domain);
+      console.log('[Resume] No summary role found. Domain:', domain, '| Suggested:', suggestedRoles);
+      suggestedRoles.forEach(r => addRole(r));
+    }
+
+    ROLES_CONFIRMED = false;
+    const roleSource = summaryRole ? `Your resume summary mentions "<strong>${escapeHtml(summaryRole)}</strong>"` : `Primary domain: <strong>${escapeHtml(domain)}</strong>`;
+    showToast('Profile extracted — please review your preferred roles.');
+    bannerEl.innerHTML = bannerHtml('ok', '✓ Resume analysed. ' + roleSource + '. Please review the suggested roles and click <strong>Submit Preferred Roles</strong> before searching.');
     navigateTo('today');
-    updateTodaysJobs();
 
   }catch(err){
     console.error(err);
@@ -1600,26 +1794,49 @@ async function enhanceWithAI(resumeText){
     });
     const data = await res.json();
     if(data.fallback || !data.analysis){
-      bannerEl.innerHTML = bannerHtml('ok', '✓ Resume parsed locally.' + (data.error ? ' (AI: ' + escapeHtml(data.error) + ')' : ''));
+      bannerEl.innerHTML = bannerHtml('ok', '✓ Resume parsed locally.' + (data.error ? ' (' + escapeHtml(data.error) + ')' : ''));
       return;
     }
 
     const ai = data.analysis;
+    const provider = data.provider || 'AI';
+    console.log('[AI] Resume analyzed via', provider, ':', ai.primaryDomain, ai.preferredRoles);
 
     if(ai.skills && ai.skills.length > 0){
       const existing = new Set((PROFILE.skills||[]).map(s=>s.toLowerCase()));
       ai.skills.forEach(s => { if(!existing.has(s.toLowerCase())){ PROFILE.skills.push(s); existing.add(s.toLowerCase()); } });
     }
 
-    if(ai.recommendedRoles && ai.recommendedRoles.length > 0){
-      const existingRoles = new Set((PROFILE.targetRoles||[]).map(r=>r.toLowerCase()));
-      ai.recommendedRoles.forEach(r => {
-        if(r.role && !existingRoles.has(r.role.toLowerCase())){
-          PROFILE.targetRoles.push(r.role);
-          existingRoles.add(r.role.toLowerCase());
-        }
+    if(ai.primaryDomain){
+      PROFILE.primaryDomain = ai.primaryDomain;
+    }
+
+    if(ai.preferredRoles && ai.preferredRoles.length > 0){
+      PROFILE.targetRoles = ai.preferredRoles;
+      PROFILE.aiRecommendedRoles = ai.recommendedRoles || ai.preferredRoles.map(r => ({ role: r, matchScore: 90, reason: 'AI-detected' }));
+
+      SELECTED_ROLES = [];
+      ai.preferredRoles.forEach(r => {
+        addRole(r);
+        const related = ROLE_SUGGESTIONS[r];
+        if(related) related.forEach(sr => addRole(sr));
       });
-      PROFILE.aiRecommendedRoles = ai.recommendedRoles;
+      ROLES_CONFIRMED = false;
+
+      const confirmBanner = document.getElementById('rolesConfirmedBanner');
+      if(confirmBanner) confirmBanner.style.display = 'none';
+    }
+
+    if(ai.experienceYears > 0){
+      PROFILE.experienceYears = ai.experienceYears;
+      const expSelect = document.getElementById('experienceLevelInput');
+      if(expSelect){
+        if(ai.experienceYears <= 0.5) expSelect.value = 'Fresher';
+        else if(ai.experienceYears <= 1) expSelect.value = '0-1 Years';
+        else if(ai.experienceYears <= 3) expSelect.value = '1-3 Years';
+        else if(ai.experienceYears <= 5) expSelect.value = '3-5 Years';
+        else expSelect.value = '5+ Years';
+      }
     }
 
     if(ai.searchQueries && ai.searchQueries.length > 0){
@@ -1630,10 +1847,15 @@ async function enhanceWithAI(resumeText){
       PROFILE.summary = ai.candidateSummary;
     }
 
+    if(ai.certifications && ai.certifications.length > 0){
+      const existingCerts = new Set((PROFILE.certifications||[]).map(c=>c.toLowerCase()));
+      ai.certifications.forEach(c => { if(!existingCerts.has(c.toLowerCase())){ PROFILE.certifications.push(c); } });
+    }
+
     const domains = detectDomains(PROFILE.skills, resumeText);
-    PROFILE.primaryDomain = domains.primary;
+    if(!ai.primaryDomain) PROFILE.primaryDomain = domains.primary;
     PROFILE.secondaryDomain = domains.secondary;
-    PROFILE.skillStrength = calculateSkillStrength(PROFILE.skills, domains.primary);
+    PROFILE.skillStrength = calculateSkillStrength(PROFILE.skills, PROFILE.primaryDomain);
 
     await storageSet('profile', PROFILE);
     renderProfileArea();
@@ -1641,10 +1863,12 @@ async function enhanceWithAI(resumeText){
     renderProfileEditCard();
     renderAIInsights();
 
-    bannerEl.innerHTML = bannerHtml('ok', '✓ Resume parsed + AI analysis complete. ' + (ai.recommendedRoles||[]).length + ' roles recommended.');
-    showToast('AI analysis complete ✓');
+    const roleCount = (ai.preferredRoles||[]).length;
+    const domainStr = ai.primaryDomain || PROFILE.primaryDomain || 'General';
+    bannerEl.innerHTML = bannerHtml('ok', `✓ Resume analysed via ${escapeHtml(provider.toUpperCase())}. Domain: <strong>${escapeHtml(domainStr)}</strong>. ${roleCount} roles suggested. Please review and click <strong>Submit Roles</strong>.`);
+    showToast(`AI analysis complete (${provider})`);
   }catch(err){
-    console.error('AI enhancement failed:', err);
+    console.error('[AI] Enhancement failed:', err);
     bannerEl.innerHTML = bannerHtml('ok', '✓ Resume parsed locally. AI enhancement unavailable.');
   }
 }
@@ -1799,27 +2023,60 @@ function setupListeners(){
   document.getElementById('updateBtn').addEventListener('click', updateTodaysJobs);
   document.getElementById('exportCsvBtn').addEventListener('click', exportCsv);
 
-  const roleSelect = document.getElementById('preferredRoleInput');
-  const customInput = document.getElementById('customRoleInput');
-  if(roleSelect && customInput){
-    roleSelect.addEventListener('change', ()=>{
-      customInput.style.display = roleSelect.value === 'Other' ? 'block' : 'none';
-      if(roleSelect.value !== 'Other') customInput.value = '';
+  setupRoleAutocomplete();
+
+  if(PROFILE && PROFILE.selectedRoles && PROFILE.selectedRoles.length > 0){
+    SELECTED_ROLES = [...PROFILE.selectedRoles];
+    ROLES_CONFIRMED = !!PROFILE.rolesConfirmed;
+    renderRoleChips();
+    if(ROLES_CONFIRMED) showRolesConfirmedState();
+  } else if(PROFILE && PROFILE.primaryDomain && PROFILE.primaryDomain !== 'General'){
+    const roles = suggestRolesFromDomain(PROFILE.primaryDomain);
+    roles.forEach(r => addRole(r));
+  } else if(PROFILE && PROFILE.targetRoles && PROFILE.targetRoles.length > 0){
+    PROFILE.targetRoles.forEach(r => {
+      addRole(r);
+      const related = ROLE_SUGGESTIONS[r];
+      if(related) related.forEach(sr => addRole(sr));
     });
-    if(PROFILE && PROFILE.preferredRole){
-      const opts = Array.from(roleSelect.options).map(o=>o.value);
-      if(opts.includes(PROFILE.preferredRole)){
-        roleSelect.value = PROFILE.preferredRole;
-      } else {
-        roleSelect.value = 'Other';
-        customInput.style.display = 'block';
-        customInput.value = PROFILE.preferredRole;
-      }
+  }
+
+  document.getElementById('confirmRolesBtn').addEventListener('click', ()=>{
+    if(SELECTED_ROLES.length === 0){
+      showToast('Please add at least one preferred role.');
+      return;
+    }
+    ROLES_CONFIRMED = true;
+    if(PROFILE){
+      PROFILE.selectedRoles = [...SELECTED_ROLES];
+      PROFILE.preferredRole = SELECTED_ROLES[0];
+      PROFILE.targetRoles = [...SELECTED_ROLES];
+      PROFILE.rolesConfirmed = true;
+      storageSet('profile', PROFILE);
+    }
+    showRolesConfirmedState();
+    showToast('Preferred roles confirmed successfully.');
+  });
+
+  function showRolesConfirmedState(){
+    const banner = document.getElementById('rolesConfirmedBanner');
+    if(banner){
+      banner.style.display = 'block';
+      banner.textContent = '✓ ' + SELECTED_ROLES.length + ' role' + (SELECTED_ROLES.length===1?'':'s') + ' confirmed';
     }
   }
+
+  const expSelect = document.getElementById('experienceLevelInput');
+  if(expSelect && PROFILE && PROFILE.experienceLevel){
+    expSelect.value = PROFILE.experienceLevel;
+  }
+
+  setupLocationAutocomplete();
+  setupDateFilter();
+
   document.getElementById('filterStatus').addEventListener('change', renderAppliedJobs);
   document.getElementById('sortBy').addEventListener('change', renderAppliedJobs);
- 
+
   const dropZone = document.getElementById('dropZone');
   const fileInput = document.getElementById('resumeFileInput');
   dropZone.addEventListener('click', ()=> fileInput.click());
@@ -1846,6 +2103,371 @@ function setupListeners(){
     document.getElementById('debugToggle').style.background = 'rgba(139,92,246,.3)';
   });
 }
+
+/* ============== LOCATION AUTOCOMPLETE ============== */
+const INDIA_CITY_STATE = {
+  'Agra':'Uttar Pradesh','Ahmedabad':'Gujarat','Ajmer':'Rajasthan','Aligarh':'Uttar Pradesh','Allahabad':'Uttar Pradesh',
+  'Ambala':'Haryana','Amravati':'Maharashtra','Amritsar':'Punjab','Anantapur':'Andhra Pradesh','Aurangabad':'Maharashtra',
+  'Bangalore':'Karnataka','Bengaluru':'Karnataka','Bareilly':'Uttar Pradesh','Belgaum':'Karnataka','Bellary':'Karnataka',
+  'Bhilai':'Chhattisgarh','Bhopal':'Madhya Pradesh','Bhubaneswar':'Odisha','Bikaner':'Rajasthan','Bilaspur':'Chhattisgarh',
+  'Chandigarh':'Chandigarh','Chennai':'Tamil Nadu','Coimbatore':'Tamil Nadu','Cuttack':'Odisha',
+  'Dehradun':'Uttarakhand','Delhi':'Delhi','Delhi NCR':'Delhi','Dharwad':'Karnataka','Dhanbad':'Jharkhand','Durgapur':'West Bengal',
+  'Ernakulam':'Kerala','Erode':'Tamil Nadu',
+  'Faridabad':'Haryana','Gachibowli':'Telangana','Gandhinagar':'Gujarat','Ghaziabad':'Uttar Pradesh','Goa':'Goa',
+  'Greater Noida':'Uttar Pradesh','Guntur':'Andhra Pradesh','Gurugram':'Haryana','Gurgaon':'Haryana','Guwahati':'Assam',
+  'HITEC City':'Telangana','Hosur':'Tamil Nadu','Hubli':'Karnataka','Hyderabad':'Telangana',
+  'Imphal':'Manipur','Indore':'Madhya Pradesh',
+  'Jabalpur':'Madhya Pradesh','Jaipur':'Rajasthan','Jalandhar':'Punjab','Jammu':'Jammu & Kashmir','Jamshedpur':'Jharkhand','Jodhpur':'Rajasthan',
+  'Kakinada':'Andhra Pradesh','Kanpur':'Uttar Pradesh','Karimnagar':'Telangana','Kochi':'Kerala','Kolhapur':'Maharashtra',
+  'Kolkata':'West Bengal','Kondapur':'Telangana','Kota':'Rajasthan','Kozhikode':'Kerala','Kukatpally':'Telangana','Kurnool':'Andhra Pradesh',
+  'Lucknow':'Uttar Pradesh','Ludhiana':'Punjab',
+  'Madhapur':'Telangana','Madurai':'Tamil Nadu','Mangalore':'Karnataka','Meerut':'Uttar Pradesh','Mohali':'Punjab',
+  'Moradabad':'Uttar Pradesh','Mumbai':'Maharashtra','Muzaffarpur':'Bihar','Mysore':'Karnataka','Mysuru':'Karnataka',
+  'Nagpur':'Maharashtra','Nanded':'Maharashtra','Nashik':'Maharashtra','Navi Mumbai':'Maharashtra',
+  'Nellore':'Andhra Pradesh','New Delhi':'Delhi','Noida':'Uttar Pradesh',
+  'Panaji':'Goa','Panchkula':'Haryana','Patna':'Bihar','Pondicherry':'Puducherry','Puducherry':'Puducherry','Pune':'Maharashtra',
+  'Raipur':'Chhattisgarh','Rajahmundry':'Andhra Pradesh','Rajkot':'Gujarat','Ranchi':'Jharkhand','Rohtak':'Haryana',
+  'Salem':'Tamil Nadu','Secunderabad':'Telangana','Shimla':'Himachal Pradesh','Siliguri':'West Bengal','Solapur':'Maharashtra',
+  'Srinagar':'Jammu & Kashmir','Surat':'Gujarat',
+  'Thane':'Maharashtra','Thiruvananthapuram':'Kerala','Thrissur':'Kerala','Tiruchirappalli':'Tamil Nadu','Tirupati':'Andhra Pradesh',
+  'Tirunelveli':'Tamil Nadu','Trivandrum':'Kerala','Tumkur':'Karnataka',
+  'Udaipur':'Rajasthan','Ujjain':'Madhya Pradesh',
+  'Vadodara':'Gujarat','Varanasi':'Uttar Pradesh','Vijayawada':'Andhra Pradesh','Visakhapatnam':'Andhra Pradesh','Vizag':'Andhra Pradesh',
+  'Warangal':'Telangana',
+};
+
+const INDIA_STATES = [
+  'Andhra Pradesh','Arunachal Pradesh','Assam','Bihar','Chhattisgarh','Delhi','Goa','Gujarat',
+  'Haryana','Himachal Pradesh','Jammu & Kashmir','Jharkhand','Karnataka','Kerala',
+  'Madhya Pradesh','Maharashtra','Manipur','Meghalaya','Mizoram','Nagaland',
+  'Odisha','Punjab','Rajasthan','Sikkim','Tamil Nadu','Telangana','Tripura',
+  'Uttar Pradesh','Uttarakhand','West Bengal',
+  'Chandigarh','Puducherry','Ladakh',
+];
+
+const HYDERABAD_AREAS = ['Hyderabad','HITEC City','Gachibowli','Madhapur','Kondapur','Kukatpally','Secunderabad','Uppal','Ameerpet','Begumpet','Jubilee Hills','Banjara Hills','LB Nagar','Miyapur'];
+const BANGALORE_AREAS = ['Bangalore','Bengaluru','Electronic City','Whitefield','Marathahalli','Koramangala','HSR Layout','Manyata Tech Park','Hebbal','Bellandur'];
+const MUMBAI_AREAS = ['Mumbai','Navi Mumbai','Thane','Andheri','BKC','Powai','Lower Parel','Goregaon','Malad'];
+const DELHI_AREAS = ['Delhi','New Delhi','Delhi NCR','Noida','Greater Noida','Gurugram','Gurgaon','Faridabad','Ghaziabad'];
+const PUNE_AREAS = ['Pune','Hinjewadi','Kharadi','Magarpatta','Wakad','Baner','Viman Nagar'];
+const CHENNAI_AREAS = ['Chennai','OMR','Sholinganallur','Tambaram','Porur','Guindy','Taramani'];
+
+const METRO_AREAS = {
+  'Hyderabad': HYDERABAD_AREAS,
+  'Bangalore': BANGALORE_AREAS, 'Bengaluru': BANGALORE_AREAS,
+  'Mumbai': MUMBAI_AREAS,
+  'Delhi': DELHI_AREAS, 'Delhi NCR': DELHI_AREAS, 'New Delhi': DELHI_AREAS,
+  'Pune': PUNE_AREAS,
+  'Chennai': CHENNAI_AREAS,
+};
+
+const GLOBAL_CITIES = [
+  'Abu Dhabi','Amsterdam','Atlanta','Auckland','Austin','Bangkok','Barcelona','Beijing','Berlin','Boston',
+  'Brisbane','Brussels','Budapest','Cairo','Cambridge','Chicago','Copenhagen','Dallas','Denver','Dubai',
+  'Dublin','Dusseldorf','Edinburgh','Frankfurt','Glasgow','Hamburg','Hanoi','Helsinki','Ho Chi Minh City',
+  'Hong Kong','Houston','Istanbul','Jakarta','Johannesburg','Kuala Lumpur','Lagos','Las Vegas','Leeds',
+  'Lisbon','Liverpool','London','Los Angeles','Lyon','Madrid','Manchester','Manila','Melbourne','Mexico City',
+  'Miami','Milan','Minneapolis','Montreal','Moscow','Munich','Nairobi','Nashville','New Jersey','New York',
+  'Nuremberg','Osaka','Oslo','Ottawa','Paris','Perth','Philadelphia','Phoenix','Pittsburgh','Portland',
+  'Prague','Raleigh','Riyadh','Rome','Rotterdam','Salt Lake City','San Antonio','San Diego','San Francisco',
+  'San Jose','Sao Paulo','Seattle','Seoul','Shanghai','Shenzhen','Singapore','Stockholm','Stuttgart',
+  'Sydney','Taipei','Tel Aviv','Tokyo','Toronto','Turin','Vancouver','Vienna','Warsaw','Washington DC',
+  'Wellington','Zurich',
+];
+
+const WORLD_CITIES = [
+  'Remote','All Locations',
+  ...Object.keys(INDIA_CITY_STATE).sort(),
+  ...INDIA_STATES.filter(s => !Object.keys(INDIA_CITY_STATE).includes(s)).sort(),
+  ...GLOBAL_CITIES,
+  'Australia','Austria','Canada','France','Germany','Ireland','Japan','Netherlands','New Zealand',
+  'Poland','Qatar','Sweden','Switzerland','Thailand','UAE','UK','USA','Ukraine','Vietnam',
+].filter((v,i,a) => a.indexOf(v) === i);
+
+function formatLocation(city){
+  if(city === 'Remote' || city === 'All Locations') return city;
+  const state = INDIA_CITY_STATE[city];
+  if(state) return city + ', ' + state + ', India';
+  if(INDIA_STATES.includes(city)) return city + ', India';
+  return city;
+}
+
+/* ============== MULTI-ROLE SELECTION WITH AUTO-SUGGESTIONS ============== */
+const DOMAIN_TO_ROLE = {
+  'Full Stack': 'Full Stack Developer',
+  'Frontend': 'Frontend Developer',
+  'Backend': 'Backend Developer',
+  'Mobile': 'Mobile Developer',
+  'Data Science': 'Data Scientist',
+  'AI/ML': 'AI/ML Engineer',
+  'Cybersecurity': 'Cybersecurity Analyst',
+  'Cloud': 'Cloud Engineer',
+  'DevOps': 'DevOps Engineer',
+  'Testing/QA': 'QA Engineer',
+  'UI/UX': 'UI/UX Designer',
+  'VLSI/ECE': 'VLSI Engineer',
+  'Embedded': 'Embedded Engineer',
+  'IoT': 'Embedded Engineer',
+  'Electrical': 'Electrical Engineer',
+  'Mechanical': 'Mechanical Engineer',
+  'Civil': 'Civil Engineer',
+  'Automobile': 'Mechanical Engineer',
+  'Aerospace': 'Mechanical Engineer',
+  'Chemical': 'Mechanical Engineer',
+  'Biotechnology': 'Data Scientist',
+  'Customer Support': 'Business Analyst',
+  'Sales': 'Business Analyst',
+  'Marketing': 'Marketing Analyst',
+  'HR': 'HR Executive',
+  'Finance': 'Finance Analyst',
+  'Accounting': 'Finance Analyst',
+  'Banking': 'Finance Analyst',
+  'Operations': 'Business Analyst',
+  'Logistics': 'Business Analyst',
+  'Healthcare': 'Data Analyst',
+  'Education': 'Product Manager',
+  'Research': 'Data Scientist',
+};
+
+function suggestRolesFromDomain(domain){
+  const primary = DOMAIN_TO_ROLE[domain];
+  if(!primary) return [];
+  const related = ROLE_SUGGESTIONS[primary] || [primary];
+  return related;
+}
+
+let ROLES_CONFIRMED = false;
+
+const ROLE_SUGGESTIONS = {
+  'Data Analyst':['Data Analyst','Junior Data Analyst','Business Analyst','BI Analyst','Reporting Analyst','Analytics Associate','SQL Analyst','Product Analyst','MIS Analyst'],
+  'Data Scientist':['Data Scientist','Applied Scientist','Research Scientist','Quantitative Analyst','ML Researcher','Statistical Analyst'],
+  'AI/ML Engineer':['AI Engineer','ML Engineer','Machine Learning Engineer','Deep Learning Engineer','NLP Engineer','Computer Vision Engineer','MLOps Engineer','AI Researcher'],
+  'Software Developer':['Software Developer','Software Engineer','Application Developer','SDE','Associate Software Engineer','Programmer Analyst'],
+  'Backend Developer':['Backend Developer','Backend Engineer','API Developer','Node.js Developer','Python Developer','Java Developer','Go Developer','.NET Developer','Django Developer'],
+  'Frontend Developer':['Frontend Developer','Frontend Engineer','UI Developer','React Developer','Angular Developer','Vue Developer','JavaScript Developer','Web Developer'],
+  'Full Stack Developer':['Full Stack Developer','Full Stack Engineer','MERN Developer','MEAN Developer','Web Application Developer','Software Engineer'],
+  'Cloud Engineer':['Cloud Engineer','Cloud Architect','AWS Engineer','Azure Engineer','GCP Engineer','Cloud DevOps Engineer','Cloud Solutions Architect'],
+  'DevOps Engineer':['DevOps Engineer','Site Reliability Engineer','SRE','Platform Engineer','Infrastructure Engineer','CI/CD Engineer','Release Engineer'],
+  'Cybersecurity Analyst':['Cybersecurity Analyst','Security Analyst','Information Security Analyst','SOC Analyst','Security Engineer','Penetration Tester','Threat Analyst'],
+  'VLSI Engineer':['VLSI Engineer','RTL Design Engineer','ASIC Design Engineer','FPGA Engineer','Physical Design Engineer','ASIC Verification Engineer','Design Verification Engineer','DFT Engineer','STA Engineer','Layout Engineer','Analog Design Engineer'],
+  'Embedded Engineer':['Embedded Engineer','Embedded Software Engineer','Firmware Engineer','Embedded Systems Developer','RTOS Developer','IoT Engineer','Embedded Linux Developer'],
+  'Business Analyst':['Business Analyst','Business Systems Analyst','Functional Analyst','Requirements Analyst','Process Analyst','Domain Analyst'],
+  'UI/UX Designer':['UI/UX Designer','UX Designer','UI Designer','Product Designer','Interaction Designer','Visual Designer','UX Researcher'],
+  'Data Engineer':['Data Engineer','ETL Developer','Data Pipeline Engineer','Big Data Engineer','Analytics Engineer','Data Warehouse Engineer'],
+  'QA Engineer':['QA Engineer','Test Engineer','SDET','Quality Analyst','Automation Tester','Test Automation Engineer','Performance Tester'],
+  'Mobile Developer':['Mobile Developer','Android Developer','iOS Developer','React Native Developer','Flutter Developer','Swift Developer','Kotlin Developer'],
+  'Product Manager':['Product Manager','Associate Product Manager','Technical Product Manager','Product Owner','Program Manager'],
+  'Mechanical Engineer':['Mechanical Engineer','Design Engineer','CAD Engineer','Manufacturing Engineer','Production Engineer','R&D Engineer'],
+  'Civil Engineer':['Civil Engineer','Structural Engineer','Site Engineer','Construction Engineer','Planning Engineer','Estimation Engineer'],
+  'Electrical Engineer':['Electrical Engineer','Power Systems Engineer','Control Systems Engineer','Instrumentation Engineer','PLC Programmer','Automation Engineer'],
+  'Marketing Analyst':['Marketing Analyst','Digital Marketing Analyst','SEO Analyst','Growth Analyst','Marketing Executive','Content Strategist','Social Media Analyst'],
+  'HR Executive':['HR Executive','HR Analyst','Talent Acquisition Specialist','Recruiter','HR Generalist','HR Coordinator'],
+  'Finance Analyst':['Finance Analyst','Financial Analyst','Investment Analyst','Risk Analyst','Credit Analyst','FP&A Analyst'],
+};
+
+const ALL_ROLES = Object.keys(ROLE_SUGGESTIONS);
+const ALL_ROLE_VARIANTS = [...new Set([...ALL_ROLES, ...Object.values(ROLE_SUGGESTIONS).flat()])].sort();
+
+let SELECTED_ROLES = [];
+
+function renderRoleChips(){
+  const container = document.getElementById('roleChips');
+  if(!container) return;
+  container.innerHTML = SELECTED_ROLES.map((role, i) =>
+    `<span style="display:inline-flex;align-items:center;gap:4px;padding:3px 8px;background:rgba(139,92,246,.18);border:1px solid var(--lav500);border-radius:6px;font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--lav200);"><span>${escapeHtml(role)}</span><span data-role-idx="${i}" style="cursor:pointer;color:var(--text-muted);font-size:13px;line-height:1;" title="Remove">&times;</span></span>`
+  ).join('');
+  container.querySelectorAll('[data-role-idx]').forEach(el=>{
+    el.addEventListener('click', ()=>{
+      SELECTED_ROLES.splice(parseInt(el.dataset.roleIdx), 1);
+      renderRoleChips();
+    });
+  });
+}
+
+function addRole(role){
+  const trimmed = role.trim();
+  if(!trimmed || SELECTED_ROLES.includes(trimmed)) return;
+  SELECTED_ROLES.push(trimmed);
+  renderRoleChips();
+}
+
+function autoSuggestRelatedRoles(primaryRole){
+  const related = ROLE_SUGGESTIONS[primaryRole];
+  if(!related) return;
+  related.forEach(r => addRole(r));
+}
+
+function setupRoleAutocomplete(){
+  const input = document.getElementById('roleSearchInput');
+  const box = document.getElementById('roleSuggestions');
+  if(!input || !box) return;
+
+  function showRoleSuggestions(){
+    const q = input.value.trim().toLowerCase();
+
+    let items = [];
+    if(q.length === 0){
+      items = ALL_ROLES.filter(r => !SELECTED_ROLES.includes(r)).slice(0, 15);
+    } else {
+      items = ALL_ROLE_VARIANTS.filter(r => r.toLowerCase().includes(q) && !SELECTED_ROLES.includes(r)).slice(0, 15);
+    }
+
+    if(items.length === 0){ box.style.display='none'; return; }
+
+    box.innerHTML = items.map(r => {
+      const isPrimary = ALL_ROLES.includes(r);
+      const hasSubs = isPrimary && ROLE_SUGGESTIONS[r];
+      return `<div class="role-opt" data-role="${escapeHtml(r)}" data-primary="${isPrimary?'1':'0'}" style="padding:9px 12px;cursor:pointer;font-family:'IBM Plex Mono',monospace;font-size:12px;color:#F0EDF9;border-bottom:1px solid rgba(180,160,255,.08);display:flex;justify-content:space-between;align-items:center;">
+        <span>${escapeHtml(r)}</span>
+        ${hasSubs ? '<span style="font-size:10px;color:var(--text-muted);">+ related</span>' : ''}
+      </div>`;
+    }).join('');
+    box.style.display = 'block';
+
+    box.querySelectorAll('.role-opt').forEach(el => {
+      el.addEventListener('mousedown', (e) => {
+        e.preventDefault();
+        const role = el.dataset.role;
+        const isPrimary = el.dataset.primary === '1';
+        addRole(role);
+        if(isPrimary) autoSuggestRelatedRoles(role);
+        input.value = '';
+        box.style.display = 'none';
+        input.focus();
+      });
+      el.addEventListener('mouseenter', () => { el.style.background = 'rgba(139,92,246,.25)'; });
+      el.addEventListener('mouseleave', () => { el.style.background = 'transparent'; });
+    });
+  }
+
+  input.addEventListener('input', showRoleSuggestions);
+  input.addEventListener('focus', showRoleSuggestions);
+  input.addEventListener('blur', () => { setTimeout(() => box.style.display = 'none', 150); });
+
+  input.addEventListener('keydown', (e) => {
+    if(e.key === 'Enter'){
+      e.preventDefault();
+      const q = input.value.trim();
+      if(q.length > 0){
+        const match = ALL_ROLE_VARIANTS.find(r => r.toLowerCase() === q.toLowerCase());
+        addRole(match || q);
+        if(match && ALL_ROLES.includes(match)) autoSuggestRelatedRoles(match);
+        input.value = '';
+        box.style.display = 'none';
+      }
+    }
+    if(e.key === 'Backspace' && input.value === '' && SELECTED_ROLES.length > 0){
+      SELECTED_ROLES.pop();
+      renderRoleChips();
+    }
+  });
+}
+
+let SELECTED_LOCATIONS = [];
+
+function renderLocationChips(){
+  const container = document.getElementById('locationChips');
+  if(!container) return;
+  container.innerHTML = SELECTED_LOCATIONS.map((loc, i) => {
+    const display = formatLocation(loc);
+    const icon = loc === 'Remote' ? '🌐 ' : loc === 'All Locations' ? '🌍 ' : '';
+    return `<span style="display:inline-flex;align-items:center;gap:4px;padding:3px 8px;background:rgba(139,92,246,.18);border:1px solid var(--lav500);border-radius:6px;font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--lav200);">${icon}${escapeHtml(display)}<span data-loc-idx="${i}" style="cursor:pointer;color:var(--text-muted);font-size:13px;line-height:1;" title="Remove">&times;</span></span>`;
+  }).join('');
+  container.querySelectorAll('[data-loc-idx]').forEach(el=>{
+    el.addEventListener('click', ()=>{
+      SELECTED_LOCATIONS.splice(parseInt(el.dataset.locIdx), 1);
+      renderLocationChips();
+      renderToday();
+      renderPrevious();
+    });
+  });
+}
+
+function getSelectedLocation(){
+  return SELECTED_LOCATIONS.join(', ');
+}
+
+function setupLocationAutocomplete(){
+  const input = document.getElementById('locationFilterInput');
+  const box = document.getElementById('locationSuggestions');
+  if(!input || !box) return;
+
+  function renderLocOption(city){
+    const formatted = formatLocation(city);
+    const icon = city === 'Remote' ? '🌐' : city === 'All Locations' ? '🌍' : '📍';
+    const sub = formatted !== city ? `<span style="color:var(--text-muted);font-size:10px;margin-left:4px;">${escapeHtml(formatted)}</span>` : '';
+    return `<div class="loc-opt" data-city="${escapeHtml(city)}" style="padding:9px 12px;cursor:pointer;font-family:'IBM Plex Mono',monospace;font-size:12px;color:#F0EDF9;border-bottom:1px solid rgba(180,160,255,.08);transition:background .1s;">${icon} ${escapeHtml(city)}${sub}</div>`;
+  }
+
+  function wireLocOpts(){
+    box.querySelectorAll('.loc-opt').forEach(el => {
+      el.addEventListener('mousedown', (e) => {
+        e.preventDefault();
+        const city = el.dataset.city;
+        if(city && !SELECTED_LOCATIONS.includes(city)){ SELECTED_LOCATIONS.push(city); renderLocationChips(); renderToday(); renderPrevious(); }
+        input.value = ''; box.style.display = 'none'; input.focus();
+      });
+      el.addEventListener('mouseenter', () => { el.style.background = 'rgba(139,92,246,.25)'; });
+      el.addEventListener('mouseleave', () => { el.style.background = 'transparent'; });
+    });
+  }
+
+  function showSuggestions(){
+    const q = input.value.trim().toLowerCase();
+    if(q.length === 0){
+      const defaults = [
+        'Remote','All Locations',
+        'Hyderabad','Bengaluru','Chennai','Pune','Mumbai',
+        'Delhi NCR','Noida','Gurugram','Visakhapatnam','Kolkata',
+      ].filter(c => !SELECTED_LOCATIONS.includes(c)).slice(0,12);
+      if(defaults.length === 0){ box.style.display='none'; return; }
+      box.innerHTML = defaults.map(c => renderLocOption(c)).join('');
+      box.style.display = 'block';
+      wireLocOpts();
+      return;
+    }
+    const formatted = WORLD_CITIES.map(c => ({ raw: c, display: formatLocation(c) }));
+    const matches = formatted
+      .filter(c => (c.raw.toLowerCase().includes(q) || c.display.toLowerCase().includes(q)) && !SELECTED_LOCATIONS.includes(c.raw))
+      .slice(0, 14);
+    if(matches.length === 0){ box.style.display='none'; return; }
+    box.innerHTML = matches.map(c => renderLocOption(c.raw)).join('');
+    box.style.display = 'block';
+    wireLocOpts();
+  }
+
+  input.addEventListener('input', showSuggestions);
+  input.addEventListener('focus', showSuggestions);
+  input.addEventListener('blur', () => { setTimeout(() => box.style.display = 'none', 150); });
+
+  input.addEventListener('keydown', (e) => {
+    if(e.key === 'Enter'){
+      e.preventDefault();
+      const q = input.value.trim();
+      if(q.length > 0){
+        const match = WORLD_CITIES.find(c => c.toLowerCase() === q.toLowerCase());
+        const city = match || q;
+        if(!SELECTED_LOCATIONS.includes(city)){
+          SELECTED_LOCATIONS.push(city);
+          renderLocationChips();
+          renderToday();
+          renderPrevious();
+        }
+        input.value = '';
+        box.style.display = 'none';
+      }
+    }
+    if(e.key === 'Backspace' && input.value === '' && SELECTED_LOCATIONS.length > 0){
+      SELECTED_LOCATIONS.pop();
+      renderLocationChips();
+      renderToday();
+      renderPrevious();
+    }
+  });
+}
+
+/* ============== DATE FILTER (removed — Today/Previous is now 24-hour based) ============== */
+function setupDateFilter(){}
 
 function renderDebugPanel(){
   const el = document.getElementById('debugContent');
